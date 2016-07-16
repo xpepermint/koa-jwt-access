@@ -6,6 +6,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 const jwt = require('jsonwebtoken');
 const compose = require('koa-compose');
+const util = require('util');
 
 /*
 * Return a middleware which finds an access token among the request params
@@ -137,13 +138,14 @@ exports.verifyAccessToken = function () {
   return (() => {
     var _ref6 = _asyncToGenerator(function* (ctx, next) {
       let token = ctx.accessToken;
+      let key = util.isFunction(secret) ? secret(ctx) : secret;
 
       if (!token) {
         ctx.throw(status, 'No access token found');
       }
 
       try {
-        ctx.accessPayload = jwt.verify(token, secret, options);
+        ctx.accessPayload = jwt.verify(token, key, options);
       } catch (e) {
         ctx.throw(status, `Invalid token (${ e.message })`);
       }

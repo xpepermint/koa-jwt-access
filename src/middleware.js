@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const compose = require('koa-compose');
+const util = require('util');
 
 /*
 * Return a middleware which finds an access token among the request params
@@ -88,13 +89,14 @@ exports.setAccessToken = function({param='accessToken', header='Authorization', 
 exports.verifyAccessToken = function({secret, status=401}={}, options) {
   return async function(ctx, next) {
     let token = ctx.accessToken;
+    let key = util.isFunction(secret) ? secret(ctx) : secret;
 
     if (!token) {
       ctx.throw(status, 'No access token found');
     }
 
     try {
-      ctx.accessPayload = jwt.verify(token, secret, options);
+      ctx.accessPayload = jwt.verify(token, key, options);
     } catch(e) {
       ctx.throw(status, `Invalid token (${e.message})`);
     }

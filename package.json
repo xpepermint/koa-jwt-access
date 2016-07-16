@@ -1,6 +1,6 @@
 {
   "name": "koa-jwt-access",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Flexible JWT middleware for Koa.js.",
   "main": "./dist/index.js",
   "scripts": {
