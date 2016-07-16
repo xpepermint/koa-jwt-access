@@ -42,6 +42,8 @@ Returns a middleware which searches for an access token among request params, he
 
 Returns a middleware which verifies access token existance, validates its content and saves it into the `ctx.accessPayload` variable. In case when the token is not set or its content is not valid, an error is thrown.
 
+The `secret` attribute expects a key for decoding the JWT token. Here you can pass a `string` of a `function`.  
+
 The `options` attribute is passed directly into `verify` method of the [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) package. 
 
 ## License (MIT)
